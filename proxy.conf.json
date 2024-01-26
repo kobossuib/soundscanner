@@ -1,0 +1,6 @@
+{
+    "/api": {
+      "target": "https://accounts.spotify.com",
+      "secure": false
+    }
+  }
