@@ -4,6 +4,7 @@ import { ApiService } from './servicios/api/api.service';
 import { BasicComponent } from './basic/basic.component';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,

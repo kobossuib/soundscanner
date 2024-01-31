@@ -1,6 +1,7 @@
 {
-    "/api": {
+    "/*": {
       "target": "https://accounts.spotify.com",
-      "secure": false
+      "secure": false,
+      "changeOrigin": true
     }
   }
