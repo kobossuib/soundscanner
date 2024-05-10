@@ -1,5 +1,27 @@
 @if (loggedIn) {
-<button (click)="getRecommendations()">Get Tracks</button>
+<button
+  (click)="getRelatedArtists(OPERATIONS.ROULETTE, null)"
+  type="button"
+  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+>
+  Artist Bag
+</button>
+<button
+  (click)="requestRelatedArtistWindow()"
+  type="button"
+  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+>
+  Related Artist
+</button>
+
+<button
+  (click)="requestPlaylistShufflerWindow()"
+  type="button"
+  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+>
+  Playlist Shuffler
+</button>
+
 
 } @else {
 <button (click)="sendAuth()">Login</button>
@@ -20,39 +42,270 @@
   }
   ```
 -->
-@if (retrievedInfo){
+@if (openRelatedArtist){
+
+<form>
+  <label
+    for="search"
+    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+    >Search</label
+  >
+  <div class="relative">
+    <div
+      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+    >
+      <svg
+        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 20 20"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+        />
+      </svg>
+    </div>
+    <input
+      type="search"
+      id="search"
+      class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Artist Spotify Url"
+      required
+    />
+    <button
+      (click)="getRelatedArtistsQuery()"
+      type="submit"
+      class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      Search
+    </button>
+  </div>
+  
+</form>
+
+@if (errorPopUp == 1){
+  <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+    <span class="font-medium">Hey!</span> Use a valid artist url.
+  </div>
+}
+
+
+
+} 
+@if (openPlaylistShuffler){
+
+  <form>
+    <label
+      for="search"
+      class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+      >Search</label
+    >
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </div>
+      <input
+        type="search"
+        id="playlistURL"
+        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Playlist Spotify Url"
+        required  
+      />
+      <button
+        (click)="getAlternativePlaylist()"
+        type="submit"
+        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Get alternative Playlist
+      </button>
+    </div>
+    
+  </form>
+  
+  @if (errorPopUp == 1){
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+      <span class="font-medium">Hey!</span> Use a valid artist url.
+    </div>
+  }
+  
+  
+  
+  }@if (retrievedInfo == 1){
+    <!-- RULETA-->
+
 <div class="bg-gray-100">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-      <h2 class="text-2xl font-bold text-gray-900">Collections</h2>
+      <h2 class="text-2xl font-bold text-gray-900">
+        Because you like {{ artists[RANDOM_NUMBER].name }}
+      </h2>
 
-      <div
-        class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0"
+      <div class="grid grid-cols-3 gap-4">
+        @for (item of relatedArtists; track $index) {
+        <div>
+          <div>
+            <a href="{{ relatedArtists[$index].uri }}">
+              <img
+                src="{{ relatedArtists[$index].images[0].url }}"
+                alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
+                class="h-full w-full object-cover object-center"
+                style="width: 200px; height: 200px"
+              />
+            </a>
+          </div>
+          <h3 class="mt-6 text-sm text-gray-500">
+            {{ relatedArtists[$index].name }}
+          </h3>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+} @if (retrievedInfo == 2){
+  <!-- RELATED ARTIST-->
+<div class="bg-gray-100">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-3 gap-4">
+
+    @if (searchedArtist!=null) {
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">Searched: {{searchedArtist.name}}</h2>
+      <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}">
+        <img
+          src="{{ searchedArtist.images[0]?.url }}"
+          alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
+          class="h-full w-full object-cover object-center"
+          style="width: 200px; height: 200px"
+        />
+      </a>
+    </div>
+
+
+    }
+    <div>
+
+      <h2 class="text-2xl font-bold text-gray-900">Related artist:</h2>
+
+        <div>
+          <div>
+            <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}">
+              <img
+                src="{{ relatedArtists[recomendationIndex].images[0]?.url }}"
+                alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
+                class="h-full w-full object-cover object-center"
+                style="width: 200px; height: 200px"
+              />
+            </a>
+          </div>
+          <h3 class="mt-6 text-sm text-gray-500">
+            {{ relatedArtists[recomendationIndex].name }}
+          </h3>
+        </div>
+        <button
+        (click)="getNextRelated()"
+        type="button"
+        class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+        style="width: auto; height: auto; padding: 0.5rem 1rem"
       >
-        <div class="group relative">
-          <div
-            class="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64"
-          >
+        Another one
+      </button>
+  
+      </div>
+  </div>
+
+
+  </div>
+</div>
+} 
+@if (retrievedInfo == 3){
+<!-- OLD PLAYLIST -->
+<div class="bg-gray-100">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-3 gap-4">
+
+      @if (oldPlaylistName != null) {
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Your Playlist:</h2>
+          <a href="{{ oldPlaylistHref }}">
             <img
-              src="{{ data?.tracks[0]?.album?.images[0]?.url }}"
-              alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
+              src="{{ oldPlaylistImage }}"
+              alt="Old Playlist Image"
               class="h-full w-full object-cover object-center"
               style="width: 200px; height: 200px"
             />
+          </a>
+          <h3 class="mt-6 text-sm text-gray-500">{{ oldPlaylistName }}</h3>
+        </div>
+      }
+
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Generated Playlist:</h2>
+        
+        <div>
+          <div>
+            <a href="{{ newPlaylist.external_urls.spotify || '' }}">
+              <img
+                src="https://i.pinimg.com/474x/e3/d1/04/e3d104d24a4a474c83d1964f78925015.jpg"
+                alt="Related Playlist Image"
+                class="h-full w-full object-cover object-center"
+                style="width: 200px; height: 200px"
+              />
+            </a>
           </div>
           <h3 class="mt-6 text-sm text-gray-500">
-            <a href="{{data?.tracks[0]?.album?.external_urls.spotify}}">
-              <span class="absolute inset-0"></span>
-              {{ data.tracks[0].album.name }}
-            </a>
+            {{ newPlaylist.name }}
           </h3>
-          <p class="text-base font-semibold text-gray-900">
-            {{ data.tracks[0].album.artists[0].name }}
-        </p>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+  
+}
+@if (retrievedInfo == 0){
+    <!-- LOADING STATE-->
+
+<div role="status" class="flex justify-center items-center h-screen">
+  <svg
+    aria-hidden="true"
+    class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+    viewBox="0 0 100 101"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+      fill="currentColor"
+    />
+    <path
+      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+      fill="currentFill"
+    />
+  </svg>
+  <span class="sr-only">Loading...</span>
 </div>
 
 }
