@@ -1,27 +1,31 @@
+<div class="flex justify-center flex-col items-center">
+
 @if (loggedIn) {
-<button
-  (click)="getRelatedArtists(OPERATIONS.ROULETTE, null)"
-  type="button"
-  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
->
-  Artist Bag
-</button>
-<button
-  (click)="requestRelatedArtistWindow()"
-  type="button"
-  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
->
-  Related Artist
-</button>
+<div class="flex justify-center">
+  <button
+    (click)="requestArtistBagWindow()"
+    type="button"
+    class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+  >
+    Artist Bag
+  </button>
+  <button
+  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
 
-<button
-  (click)="requestPlaylistShufflerWindow()"
-  type="button"
-  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
->
-  Playlist Shuffler
-</button>
+    (click)="requestRelatedArtistWindow()"
+    type="button"
+  >
+    Related Artist
+  </button>
 
+  <button
+    (click)="requestPlaylistShufflerWindow()"
+    type="button"
+    class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+  >
+    Playlist Shuffler
+  </button>
+</div>
 
 } @else {
 <button (click)="sendAuth()">Login</button>
@@ -44,7 +48,7 @@
 -->
 @if (openRelatedArtist){
 
-<form>
+<form class=" w-[25em] ">
   <label
     for="search"
     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -85,74 +89,69 @@
       Search
     </button>
   </div>
-  
 </form>
 
 @if (errorPopUp == 1){
-  <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-    <span class="font-medium">Hey!</span> Use a valid artist url.
-  </div>
-}
+<div
+  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+  role="alert"
+>
+  <span class="font-medium">Hey!</span> Use a valid artist url.
+</div>
+} } @if (openPlaylistShuffler){
 
-
-
-} 
-@if (openPlaylistShuffler){
-
-  <form>
-    <label
-      for="search"
-      class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >Search</label
+<form class=" w-[25em]">
+  <label
+    for="search"
+    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+    >Search</label
+  >
+  <div class="relative">
+    <div
+      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
     >
-    <div class="relative">
-      <div
-        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      <svg
+        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 20 20"
       >
-        <svg
-          class="w-4 h-4 text-gray-500 dark:text-gray-400"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 20 20"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-          />
-        </svg>
-      </div>
-      <input
-        type="search"
-        id="playlistURL"
-        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Playlist Spotify Url"
-        required  
-      />
-      <button
-        (click)="getAlternativePlaylist()"
-        type="submit"
-        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Get alternative Playlist
-      </button>
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+        />
+      </svg>
     </div>
-    
-  </form>
-  
-  @if (errorPopUp == 1){
-    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-      <span class="font-medium">Hey!</span> Use a valid artist url.
-    </div>
-  }
-  
-  
-  
-  }@if (retrievedInfo == 1){
-    <!-- RULETA-->
+    <input
+      type="search"
+      id="playlistURL"
+      class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Playlist Spotify Url"
+      required
+    />
+    <button
+      (click)="getAlternativePlaylist()"
+      type="submit"
+      class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      Get alternative Playlist
+    </button>
+  </div>
+</form>
+
+@if (errorPopUp == 1){
+<div
+  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+  role="alert"
+>
+  <span class="font-medium">Hey!</span> Use a valid artist url.
+</div>
+} }@if (retrievedInfo == 1){
+<!-- RULETA-->
 
 <div class="bg-gray-100">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -184,29 +183,28 @@
   </div>
 </div>
 } @if (retrievedInfo == 2){
-  <!-- RELATED ARTIST-->
-<div class="bg-gray-100">
+<!-- RELATED ARTIST-->
+<div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 gap-x-4 place-content-center">
+      @if (searchedArtist!=null) {
+        <div class="flex flex-col text-center">
+          <h2 class="text-2xl font-bold text-gray-900">
+          Searched: {{ searchedArtist.name }}
+        </h2>
+        <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}" class="grid place-content-center">
+          <img
+            src="{{ searchedArtist.images[0]?.url }}"
+            alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
+            class="h-full w-full object-cover object-center"
+            style="width: 200px; height: 200px"
+          />
+        </a>
+      </div>
 
-    @if (searchedArtist!=null) {
-    <div>
-      <h2 class="text-2xl font-bold text-gray-900">Searched: {{searchedArtist.name}}</h2>
-      <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}">
-        <img
-          src="{{ searchedArtist.images[0]?.url }}"
-          alt="Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug."
-          class="h-full w-full object-cover object-center"
-          style="width: 200px; height: 200px"
-        />
-      </a>
-    </div>
-
-
-    }
-    <div>
-
-      <h2 class="text-2xl font-bold text-gray-900">Related artist:</h2>
+      }
+      <div class="grid place-content-center text-center">
+        <h2 class="text-2xl font-bold text-gray-900">Related artist:</h2>
 
         <div>
           <div>
@@ -224,45 +222,40 @@
           </h3>
         </div>
         <button
-        (click)="getNextRelated()"
-        type="button"
-        class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-        style="width: auto; height: auto; padding: 0.5rem 1rem"
-      >
-        Another one
-      </button>
-  
+          (click)="getNextRelated()"
+          type="button"
+          class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          style="width: auto; height: auto; padding: 0.5rem 1rem"
+        >
+          Another one
+        </button>
       </div>
-  </div>
-
-
+    </div>
   </div>
 </div>
-} 
-@if (retrievedInfo == 3){
+} @if (retrievedInfo == 3){
 <!-- OLD PLAYLIST -->
-<div class="bg-gray-100">
+<div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-3 gap-4">
-
+    <div class="grid grid-cols-2 gap-x-4 place-content-center">
       @if (oldPlaylistName != null) {
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900">Your Playlist:</h2>
-          <a href="{{ oldPlaylistHref }}">
-            <img
-              src="{{ oldPlaylistImage }}"
-              alt="Old Playlist Image"
-              class="h-full w-full object-cover object-center"
-              style="width: 200px; height: 200px"
-            />
-          </a>
-          <h3 class="mt-6 text-sm text-gray-500">{{ oldPlaylistName }}</h3>
-        </div>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Your Playlist:</h2>
+        <a href="{{ oldPlaylistHref }}">
+          <img
+            src="{{ oldPlaylistImage }}"
+            alt="Old Playlist Image"
+            class="h-full w-full object-cover object-center"
+            style="width: 200px; height: 200px"
+          />
+        </a>
+        <h3 class="mt-6 text-sm text-gray-500">{{ oldPlaylistName }}</h3>
+      </div>
       }
 
       <div>
         <h2 class="text-2xl font-bold text-gray-900">Generated Playlist:</h2>
-        
+
         <div>
           <div>
             <a href="{{ newPlaylist.external_urls.spotify || '' }}">
@@ -283,10 +276,8 @@
   </div>
 </div>
 
-  
-}
-@if (retrievedInfo == 0){
-    <!-- LOADING STATE-->
+} @if (retrievedInfo == 0){
+<!-- LOADING STATE-->
 
 <div role="status" class="flex justify-center items-center h-screen">
   <svg
@@ -309,3 +300,4 @@
 </div>
 
 }
+</div>

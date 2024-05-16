@@ -15,6 +15,7 @@ import { catchError, map, take, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { concatAll } from 'rxjs/operators';
 
+
 // Declarar un sujeto para controlar el envío de canciones a la playlist
 
 @Component({
@@ -26,8 +27,8 @@ import { concatAll } from 'rxjs/operators';
 })
 export class BasicComponent {
   MIN_RELATED_ARTISTS = 5;
-  MAX_POPULARITY = 40;
-  ALGORITHM_ITERATIONS = 3;
+  MAX_POPULARITY = 30;
+  ALGORITHM_ITERATIONS = 6;
   RANDOM_NUMBER = 0;
   authorizationHTML: string = '';
   token: string = '';
@@ -146,6 +147,10 @@ export class BasicComponent {
     this.openRelatedArtist = false;
     this.retrievedInfo = -1;
   }
+  requestArtistBagWindow() {
+    this.getRelatedArtists(OPERATIONS.ROULETTE, null).subscribe((data) => {return data})
+  }
+  
 
   searchQuery(query: string) {
     this.api.searchRequest(this.token, query);
@@ -158,8 +163,6 @@ export class BasicComponent {
     return new Observable((observer) => {
       //reset variables
       this.errorPopUp = 0;
-      this.openPlaylistShuffler = false;
-      this.openRelatedArtist = true;
 
       this.retrievedInfo = 0;
       this.relatedArtists = [];
@@ -560,7 +563,8 @@ export class BasicComponent {
                         relatedArtistResponse.length > 0
                       ) {
 
-
+                        this.openPlaylistShuffler = true
+                        this.openRelatedArtist = false
                         const randomIndex = Math.floor(
                           Math.random() * relatedArtistResponse.length
                         ); // Generate a random index
