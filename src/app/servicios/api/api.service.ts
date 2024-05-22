@@ -4,6 +4,9 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { artist } from '../../artist.interface';
 import { environment } from '../../../environments/environment.development';
 
+const redirectUri = environment.CALLBACK_URI;
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +17,7 @@ export class ApiService {
   RECOMMENDATIONS_BASE_URL = 'https://api.spotify.com/v1/recommendations?';
   CLIENT_ID = '233aceedd8c444acb6c75ba2e4922342';
   SCOPES = 'user-read-private%20user-read-email%20user-top-read%20playlist-modify-public%20playlist-modify-private';
-  REDIRECT_URI = environment.CALLBACK_URI;
+  REDIRECT_URI = redirectUri;
   AUTHORIZE_BASEURL = 'https://accounts.spotify.com/authorize';
   TOP_ITEMS_BASEURL = 'https://api.spotify.com/v1/me/top/artists?limit=20';
   SEARCH_URL = 'https://api.spotify.com/v1/search?q='
