@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { artist } from '../../artist.interface';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 const redirectUri = environment.CALLBACK_URI;
+
 
 
 @Injectable({
@@ -37,7 +38,6 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   startUrl(artists:artist[]){
-    console.log("startUrl : "+artists)
     for (const artist of artists) {
       this.SEED_ARTISTS += artist.id + ',';
     }
@@ -46,7 +46,6 @@ export class ApiService {
     }
     this.SEED_ARTISTS = encodeURI(this.SEED_ARTISTS);
     this.GENRES = encodeURI(this.GENRES);
-    console.log("genres is "+this.GENRES)
   }
   recommendationsRequest(token:string, artists:artist[]): Observable<any> {
 
@@ -54,7 +53,6 @@ export class ApiService {
       'Authorization': 'Bearer ' + token,
     });
     let url = this.RECOMMENDATIONS_BASE_URL + 'seed_artists='+this.SEED_ARTISTS+'&seed_tracks=&max_popularity=30'
-    console.log("REQUESTED: "+url);
     return this.http.get(url, { headers: headers });
   }
 
@@ -95,7 +93,6 @@ export class ApiService {
   }
 
     searchArtistById(token:string, artistId:string){
-      console.log("toLookArtist id 5: "+artistId)
 
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + token,
@@ -119,7 +116,6 @@ export class ApiService {
     'Authorization': 'Bearer ' + token,
   });
 let query = this.GET_ARTIST_SONGS + artistId + "/top-tracks";
-console.log(query);
   return this.http.get(query, {headers: headers});
  }
 
@@ -151,9 +147,7 @@ console.log(query);
   const headers = new HttpHeaders({
     'Authorization': 'Bearer ' + token,
   });
-  console.log("llego, token es: "+token)
   let query = this.GET_PROFILE
-  console.log("la query es "+query, headers);
   return this.http.get<any>(query, { headers: headers })
     .pipe(
       catchError((error: HttpErrorResponse) => {
