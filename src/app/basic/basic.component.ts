@@ -23,7 +23,7 @@ import { concatAll } from 'rxjs/operators';
   standalone: true,
   imports: [HttpClientModule, ReactiveFormsModule],
   templateUrl: './basic.component.html',
-  styleUrl: './basic.component.css',
+  styleUrls: ['./basic.component.css'], // Corrected property name
 })
 export class BasicComponent {
   MIN_RELATED_ARTISTS = 5;
