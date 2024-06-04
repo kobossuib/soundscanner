@@ -1,6 +1,7 @@
 export const environment = {
-    production: false,
+    production: true,
 
-    CALLBACK_URI: "https://soundscout-gh4uk8wnc-kobossuibs-projects.vercel.app/callback"
+    CALLBACK_URI: "https://soundscout-n5b5v875h-kobossuibs-projects.vercel.app/callback"
+
 
 };
