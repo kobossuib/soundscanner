@@ -23,12 +23,12 @@ import { concatAll } from 'rxjs/operators';
   standalone: true,
   imports: [HttpClientModule, ReactiveFormsModule],
   templateUrl: './basic.component.html',
-  styleUrl: './basic.component.css',
+  styleUrls: ['./basic.component.css'], // Corrected property name
 })
 export class BasicComponent {
   MIN_RELATED_ARTISTS = 5;
   MAX_POPULARITY = 30;
-  ALGORITHM_ITERATIONS = 6;
+  ALGORITHM_ITERATIONS = 7;
   RANDOM_NUMBER = 0;
   authorizationHTML: string = '';
   token: string = '';
@@ -87,7 +87,6 @@ export class BasicComponent {
     // Set a new timer for 1 hour (3600 seconds * 1000 milliseconds)
     this.loginTimer = setTimeout(() => {
       this.loggedIn = false;
-      console.log('User logged out due to inactivity.');
     }, 3600 * 1000); // 1 hour in milliseconds
   }
 
@@ -106,12 +105,7 @@ export class BasicComponent {
   getNextRelated() {
     //passes to the next related Artist on the relatedArtist functionality
     if (this.recomendationIndex < this.relatedArtists.length - 1) {
-      console.log(
-        'length is ' +
-          this.relatedArtists.length +
-          ' and index: ' +
-          this.recomendationIndex
-      );
+
       this.recomendationIndex++;
     }
   }
@@ -177,29 +171,22 @@ export class BasicComponent {
           concatMap((data) => {
             this.getTopItems(data);
             let toLookArtist = null;
-            console.log('artist id 2: ' + artistId);
 
             if (!artistId) {
               if (operation == OPERATIONS.ROULETTE) {
 
                 this.openRelatedArtist = false;
                 toLookArtist = this.artists[this.RANDOM_NUMBER].id;
-                console.log(
-                  'ARTIST TO LOOK IS ' + this.artists[this.RANDOM_NUMBER].name,
-                  this.artists[this.RANDOM_NUMBER].genres,
-                  this.artists[this.RANDOM_NUMBER].popularity
-                );
+      
               } else if (operation == OPERATIONS.RELATED_ARTIST) {
 
                 //get artist from the textfield input
                 toLookArtist = (<HTMLInputElement>(
                   document.getElementById('search')
                 )).value;
-                console.log("toLookArtist is :" + toLookArtist)
                 if (
                   !toLookArtist.startsWith('https://open.spotify.com/artist')
                 ) {
-                  console.log("hay error, el artista insertado no empieza por: https://open.spotify.com/artist")
                   this.errorPopUp = 1;
                   //quitamos el estado de cargando, volvemos a standby
                   this.retrievedInfo = -1;
@@ -217,7 +204,6 @@ export class BasicComponent {
               toLookArtist = artistId;
             }
 
-            console.log('toLookArtist id 4: ' + toLookArtist);
 
             this.api
               .searchArtistById(this.token, toLookArtist)
@@ -244,14 +230,14 @@ export class BasicComponent {
                 }
               );
 
+              let iterations = operation == OPERATIONS.ROULETTE || operation == OPERATIONS.RELATED_ARTIST? this.ALGORITHM_ITERATIONS + 2: this.ALGORITHM_ITERATIONS 
             return this.fetchRelatedArtists(
               toLookArtist || '',
-              this.ALGORITHM_ITERATIONS
+              iterations
             );
           }),
           concatMap(() => {
 
-            console.log(this.relatedArtistsUnfiltered);
 
             // Se intenta hacer el filtro estricto!
             this.relatedArtistsUnfiltered.forEach((artist) => {
@@ -365,13 +351,15 @@ export class BasicComponent {
           // Calculate scores for each similar artist
           similarArtists.forEach((artist: any) => {
             artist.score = 100 - artist.popularity; // Initial score based on popularity
-            if (this.artists[this.RANDOM_NUMBER].genres && artist.genres) {
+            if (this.searchedArtist.genres && artist.genres) {
               // If both artists have genres, calculate score based on shared genres
               let sharedGenres = artist.genres.filter((genre: string) =>
-                this.artists[this.RANDOM_NUMBER].genres.includes(genre)
+                this.searchedArtist.genres.includes(genre)
               ).length;
-              artist.score += sharedGenres * 10; // Increment score based on shared genres
+              artist.score += sharedGenres * 20; // Increment score based on shared genres
+             // console.log(" shared genres: " +sharedGenres + " popularity: " +artist.popularity)
             }
+          //  console.log(artist.name + " scored: "+ artist.score)
           });
         }
 
@@ -380,7 +368,6 @@ export class BasicComponent {
           (a: artist) => !visitedArtistIds.has(a.id)
         );
 
-        console.log('similarArtists is: ');
 
         // Include artists with no genres
         const artistsWithNoGenres = data.artists.filter(
@@ -409,11 +396,7 @@ export class BasicComponent {
 
         // Now similarArtist contains the desired artist
 
-        console.log(
-          'Chose  ' + similarArtist?.name,
-          similarArtist?.genres,
-          similarArtist?.popularity + 'at step ' + repetitions
-        );
+
         this.artistChain.push(similarArtist);
         // If similarArtistId is null, it means no suitable artist was found, return null
         // Otherwise, recursively call fetchRelatedArtists with the new similarArtistId
@@ -459,12 +442,10 @@ export class BasicComponent {
     this.api.getCurrentProfile(this.token).subscribe(
       (response) => {
         this.profileInfo = response;
-        console.log('Profile Id:', this.profileInfo.id); // You can also log the response here
         this.api
           .createPlaylist(this.token, this.profileInfo.id)
           .subscribe((response) => {
             this.newPlaylist = response;
-            console.log('The new playlist is: ' + this.newPlaylist.href);
 
             let tracklist: any[] = [];
 
@@ -485,7 +466,6 @@ export class BasicComponent {
               toLookPlaylist.indexOf('playlist/') + 'playlist/'.length;
             let endIndex = toLookPlaylist.indexOf('?');
             toLookPlaylist = toLookPlaylist.substring(startIndex, endIndex);
-            console.log('Playlist id: ' + toLookPlaylist);
             this.api
               .searchPlaylistById(this.token, toLookPlaylist)
               .pipe(
@@ -548,10 +528,7 @@ export class BasicComponent {
                 (relatedArtistsResponses) => {
                   (relatedArtistsResponses as any[]).forEach(
                     (response, index) => {
-                      console.log(
-                        `relatedArtistResponses[${index}]:`,
-                        response
-                      );
+              
                     }
                   );
                   let newPlaylistTracks: Observable<Object>[] = [];
@@ -614,7 +591,6 @@ export class BasicComponent {
       )
       .subscribe(
         (playlistResponses) => {
-          console.log('Playlist sent bro' + playlistResponses);
         },
         (error) => {
           console.error('Error sending songs to playlist:', error);
@@ -657,7 +633,6 @@ export class BasicComponent {
     let accessToken = params.get('access_token');
 
     // Imprime el access_token
-    console.log('Access Token:', accessToken);
 
     this.token = accessToken || '';
   }
