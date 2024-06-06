@@ -15,7 +15,6 @@ import { catchError, map, take, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { concatAll } from 'rxjs/operators';
 
-
 // Declarar un sujeto para controlar el envío de canciones a la playlist
 
 @Component({
@@ -55,7 +54,6 @@ export class BasicComponent {
   oldPlaylistHref = '';
   oldPlaylistImage = '';
 
-
   artistURL: any;
   errorPopUp = 0;
   searchedArtist: any;
@@ -87,7 +85,8 @@ export class BasicComponent {
     // Set a new timer for 1 hour (3600 seconds * 1000 milliseconds)
     this.loginTimer = setTimeout(() => {
       this.loggedIn = false;
-    }, 3600 * 1000); // 1 hour in milliseconds
+      this.retrievedInfo = -1
+    }, 3600 * 300); // 1 hour in milliseconds
   }
 
   clearLoginTimer() {
@@ -105,7 +104,6 @@ export class BasicComponent {
   getNextRelated() {
     //passes to the next related Artist on the relatedArtist functionality
     if (this.recomendationIndex < this.relatedArtists.length - 1) {
-
       this.recomendationIndex++;
     }
   }
@@ -142,16 +140,19 @@ export class BasicComponent {
     this.retrievedInfo = -1;
   }
   requestArtistBagWindow() {
-    this.getRelatedArtists(OPERATIONS.ROULETTE, null).subscribe((data) => {return data})
+    this.getRelatedArtists(OPERATIONS.ROULETTE, null).subscribe((data) => {
+      return data;
+    });
   }
-  
 
   searchQuery(query: string) {
     this.api.searchRequest(this.token, query);
   }
 
   getRelatedArtistsQuery() {
-    this.getRelatedArtists(OPERATIONS.RELATED_ARTIST, '').subscribe((data) => {return data})
+    this.getRelatedArtists(OPERATIONS.RELATED_ARTIST, '').subscribe((data) => {
+      return data;
+    });
   }
   getRelatedArtists(operation: string, artistId: any) {
     return new Observable((observer) => {
@@ -174,12 +175,9 @@ export class BasicComponent {
 
             if (!artistId) {
               if (operation == OPERATIONS.ROULETTE) {
-
                 this.openRelatedArtist = false;
                 toLookArtist = this.artists[this.RANDOM_NUMBER]?.id;
-      
               } else if (operation == OPERATIONS.RELATED_ARTIST) {
-
                 //get artist from the textfield input
                 toLookArtist = (<HTMLInputElement>(
                   document.getElementById('search')
@@ -187,11 +185,11 @@ export class BasicComponent {
                 if (
                   !toLookArtist.startsWith('https://open.spotify.com/artist')
                 ) {
-                  this.errorPopUp = 1;
-                  //quitamos el estado de cargando, volvemos a standby
-                  this.retrievedInfo = -1;
+              this.errorPopUp = 1;
+              //quitamos el estado de cargando, volvemos a standby
+              this.retrievedInfo = -1;
 
-                  return of('');
+              return of('');
                 }
 
                 let startIndex =
@@ -200,7 +198,6 @@ export class BasicComponent {
                 toLookArtist = toLookArtist.substring(startIndex, endIndex);
               }
             } else {
-
               toLookArtist = artistId;
             }
 
@@ -229,15 +226,14 @@ export class BasicComponent {
                 }
               );
 
-              let iterations = operation == OPERATIONS.ROULETTE || operation == OPERATIONS.RELATED_ARTIST? this.ALGORITHM_ITERATIONS + 2: this.ALGORITHM_ITERATIONS 
-            return this.fetchRelatedArtists(
-              toLookArtist || '',
-              iterations
-            );
+            let iterations =
+              operation == OPERATIONS.ROULETTE ||
+              operation == OPERATIONS.RELATED_ARTIST
+                ? this.ALGORITHM_ITERATIONS + 2
+                : this.ALGORITHM_ITERATIONS;
+            return this.fetchRelatedArtists(toLookArtist || '', iterations);
           }),
           concatMap(() => {
-
-
             // Se intenta hacer el filtro estricto!
             this.relatedArtistsUnfiltered.forEach((artist) => {
               if (artist.genres) {
@@ -261,7 +257,6 @@ export class BasicComponent {
               }
             });
             this.relatedArtistsUnfiltered.forEach((artist) => {
-
               if (artist.genres) {
                 if (
                   artist.popularity < this.MAX_POPULARITY &&
@@ -316,8 +311,7 @@ export class BasicComponent {
               this.retrievedInfo = 1;
             } else if (operation == OPERATIONS.RELATED_ARTIST) {
               this.retrievedInfo = 2;
-            }
-            else if (operation == OPERATIONS.PLAYLIST_GENERATOR) {
+            } else if (operation == OPERATIONS.PLAYLIST_GENERATOR) {
               this.retrievedInfo = 3;
             }
             return of(this.relatedArtists);
@@ -347,7 +341,6 @@ export class BasicComponent {
         let similarArtists = data.artists;
 
         if (similarArtists.length > 0) {
-
           // Calculate scores for each similar artist
           similarArtists.forEach((artist: any) => {
             artist.score = 100 - artist.popularity; // Initial score based on popularity
@@ -359,7 +352,7 @@ export class BasicComponent {
               artist.score += sharedGenres * 20; // Increment score based on shared genres
               //console.log(" shared genres: " +sharedGenres + " popularity: " +artist.popularity)
             }
-         //   console.log(artist.name + " scored: "+ artist.score)
+            //   console.log(artist.name + " scored: "+ artist.score)
           });
         }
 
@@ -367,7 +360,6 @@ export class BasicComponent {
         similarArtists = similarArtists.filter(
           (a: artist) => !visitedArtistIds.has(a.id)
         );
-
 
         // Include artists with no genres
         const artistsWithNoGenres = data.artists.filter(
@@ -395,7 +387,6 @@ export class BasicComponent {
         }
 
         // Now similarArtist contains the desired artist
-
 
         this.artistChain.push(similarArtist);
         // If similarArtistId is null, it means no suitable artist was found, return null
@@ -460,7 +451,7 @@ export class BasicComponent {
               //quitamos el estado de cargando, volvemos a standby
               this.retrievedInfo = -1;
 
-              return '';
+              return of('');
             }
             let startIndex =
               toLookPlaylist.indexOf('playlist/') + 'playlist/'.length;
@@ -473,9 +464,9 @@ export class BasicComponent {
                   if (data && data.tracks) {
                     const playlistArtists = [];
                     const relatedArtistsObservables: any[] = [];
-                    this.oldPlaylistHref = data.external_urls.spotify
-                    this.oldPlaylistImage = data.images[0].url
-                    this.oldPlaylistName = data.name
+                    this.oldPlaylistHref = data.external_urls.spotify;
+                    this.oldPlaylistImage = data.images[0].url;
+                    this.oldPlaylistName = data.name;
                     data.tracks.items.slice(0, 7).forEach(
                       (
                         item: {
@@ -485,7 +476,7 @@ export class BasicComponent {
                       ) => {
                         if (index < 7) {
                           playlistArtists.push(item.track.artists[0].id);
-  
+
                           relatedArtistsObservables.push(
                             this.getRelatedArtists(
                               OPERATIONS.PLAYLIST_GENERATOR, ///--------------------------------
@@ -527,9 +518,7 @@ export class BasicComponent {
               .subscribe(
                 (relatedArtistsResponses) => {
                   (relatedArtistsResponses as any[]).forEach(
-                    (response, index) => {
-              
-                    }
+                    (response, index) => {}
                   );
                   let newPlaylistTracks: Observable<Object>[] = [];
 
@@ -539,9 +528,8 @@ export class BasicComponent {
                         relatedArtistResponse &&
                         relatedArtistResponse.length > 0
                       ) {
-
-                        this.openPlaylistShuffler = true
-                        this.openRelatedArtist = false
+                        this.openPlaylistShuffler = true;
+                        this.openRelatedArtist = false;
                         const randomIndex = Math.floor(
                           Math.random() * relatedArtistResponse.length
                         ); // Generate a random index
@@ -590,8 +578,7 @@ export class BasicComponent {
         take(1) // Solo permite que complete una vez
       )
       .subscribe(
-        (playlistResponses) => {
-        },
+        (playlistResponses) => {},
         (error) => {
           console.error('Error sending songs to playlist:', error);
         }
