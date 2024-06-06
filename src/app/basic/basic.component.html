@@ -177,9 +177,14 @@
         </div>
         }
       </div>
+ 
     </div>
   </div>
 </div>
+@if (relatedArtists.length == 0){
+<span  class="font-medium"> {{ artists[RANDOM_NUMBER].name }} is too popular or has too specific genres, please try with another artist </span> 
+     
+}
 } @if (retrievedInfo == 2){
 <!-- RELATED ARTIST-->
 <div class="bg-slate-200 rounded-md px-2 py-1 mt-4">

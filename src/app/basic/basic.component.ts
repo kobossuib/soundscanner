@@ -161,7 +161,7 @@ export class BasicComponent {
       this.retrievedInfo = 0;
       this.relatedArtists = [];
       this.relatedArtistsUnfiltered = [];
-      this.RANDOM_NUMBER = Math.floor(Math.random() * 21);
+      this.RANDOM_NUMBER = Math.floor(Math.random() * 20);
 
       this.artists[0];
 
@@ -176,7 +176,7 @@ export class BasicComponent {
               if (operation == OPERATIONS.ROULETTE) {
 
                 this.openRelatedArtist = false;
-                toLookArtist = this.artists[this.RANDOM_NUMBER].id;
+                toLookArtist = this.artists[this.RANDOM_NUMBER]?.id;
       
               } else if (operation == OPERATIONS.RELATED_ARTIST) {
 
@@ -203,7 +203,6 @@ export class BasicComponent {
 
               toLookArtist = artistId;
             }
-
 
             this.api
               .searchArtistById(this.token, toLookArtist)
@@ -345,21 +344,22 @@ export class BasicComponent {
     return this.api.relatedArtistsRequest(this.token, artistId).pipe(
       concatMap((data) => {
         this.relatedArtistsUnfiltered.push(...data.artists);
-
         let similarArtists = data.artists;
-        if (similarArtists.length > 1) {
+
+        if (similarArtists.length > 0) {
+
           // Calculate scores for each similar artist
           similarArtists.forEach((artist: any) => {
             artist.score = 100 - artist.popularity; // Initial score based on popularity
-            if (this.searchedArtist.genres && artist.genres) {
+            if (this.searchedArtist?.genres && artist?.genres) {
               // If both artists have genres, calculate score based on shared genres
               let sharedGenres = artist.genres.filter((genre: string) =>
                 this.searchedArtist.genres.includes(genre)
               ).length;
               artist.score += sharedGenres * 20; // Increment score based on shared genres
-             // console.log(" shared genres: " +sharedGenres + " popularity: " +artist.popularity)
+              //console.log(" shared genres: " +sharedGenres + " popularity: " +artist.popularity)
             }
-          //  console.log(artist.name + " scored: "+ artist.score)
+         //   console.log(artist.name + " scored: "+ artist.score)
           });
         }
 
