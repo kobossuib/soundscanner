@@ -1,32 +1,40 @@
 <div class="flex justify-center flex-col items-center">
 
 @if (loggedIn) {
-<div class="flex justify-center">
-  <button
-    (click)="requestArtistBagWindow()"
-    type="button"
-    class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
-  >
-    Artist Bag
-  </button>
-  <button
-  class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
-
-    (click)="requestRelatedArtistWindow()"
-    type="button"
-  >
-    Related Artist
-  </button>
-
-  <button
-    (click)="requestPlaylistShufflerWindow()"
-    type="button"
-    class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
-  >
-    Playlist Shuffler
-  </button>
-</div>
-
+  <div class="flex justify-center">
+    <button
+      (click)="requestArtistBagWindow()"
+      type="button"
+      class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+    >
+      Artist Bag
+    </button>
+    <button
+      class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+      (click)="requestRelatedArtistWindow()"
+      type="button"
+    >
+      Related Artist
+    </button>
+    <button
+      (click)="requestPlaylistShufflerWindow()"
+      type="button"
+      class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+    >
+      Playlist Shuffler
+    </button>
+  </div>
+  
+  <div class="mt-5 p-4 bg-gray-100 rounded-lg">
+    <h2 class="text-lg font-semibold">Guía de Uso</h2>
+    
+    <ul class="text-gray-700 list-disc list-inside">
+      <li><strong>Artist Bag:</strong> Lista de artistas relacionados con uno de los más escuchados de tu perfil.</li>
+      <li><strong>Related Artist:</strong> Encuentra artistas relacionados con un artista específico usando su URL de Spotify.</li>
+      <li><strong>Playlist Shuffler:</strong> Genera una playlist alternativa con artistas emergentes a partir de una URL de una playlist.</li>
+    </ul>
+  </div>
+      
 } @else {
 <button (click)="sendAuth()">Login</button>
 
