@@ -447,7 +447,7 @@ export class BasicComponent {
             if (
               !toLookPlaylist.startsWith('https://open.spotify.com/playlist')
             ) {
-              this.errorPopUp = 1;
+              this.errorPopUp = 3;
               //quitamos el estado de cargando, volvemos a standby
               this.retrievedInfo = -1;
 

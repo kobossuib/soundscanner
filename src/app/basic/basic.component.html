@@ -1,6 +1,7 @@
-<div class="flex justify-center flex-col items-center">
 
-@if (loggedIn) {
+<div class="flex justify-center flex-col items-center">
+ 
+  @if (loggedIn) {
   <div class="flex justify-center">
     <button
       (click)="requestArtistBagWindow()"
@@ -24,15 +25,20 @@
       Playlist Shuffler
     </button>
   </div>
-  
 
-      
-} @else {
-<button (click)="sendAuth()">Login</button>
+  } @else {
+      <!--  Bounce  -->
+      <div class="animate-bounce">
+        <button       class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 transition-colors duration-500"
+        (click)="requestRelatedArtistWindow()"
+        type="button"
+  (click)="sendAuth()">Login</button>
 
-}
-<div [innerHTML]="authorizationHTML">aaaaa</div>
-<!--
+    </div>
+
+  }
+  <div [innerHTML]="authorizationHTML">aaaaa</div>
+  <!--
   This example requires some changes to your config:
   
   ```
@@ -46,7 +52,7 @@
   }
   ```
 -->
-@if (openRelatedArtist){
+  @if (openRelatedArtist){
 
   <label
     for="search"
@@ -77,7 +83,7 @@
       type="search"
       id="search"
       class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      style="width: 500px;"
+      style="width: 500px"
       placeholder="Artist Spotify Url"
       required
     />
@@ -90,14 +96,21 @@
     </button>
   </div>
 
-@if (errorPopUp == 1){
-<div
-  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-  role="alert"
->
-  <span class="font-medium">Hey!</span> Use a valid artist url.
-</div>
-} } @if (openPlaylistShuffler){
+  @if (errorPopUp == 1){
+  <div
+    class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Hey!</span> Use a valid artist url.
+  </div>
+  } @if (errorPopUp == 3){
+  <div
+    class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Hey!</span> Use a valid playlist url.
+  </div>
+  } } @if (openPlaylistShuffler){
 
   <label
     for="search"
@@ -128,7 +141,7 @@
       type="search"
       id="playlistURL"
       class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      style="width: 500px;"
+      style="width: 500px"
       placeholder="Playlist Spotify Url"
       required
     />
@@ -140,177 +153,196 @@
       Get alternative Playlist
     </button>
   </div>
-  
-@if (errorPopUp == 1){
-<div
-  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-  role="alert"
->
-  <span class="font-medium">Hey!</span> Use a valid artist url.
-</div>
-} }@if (retrievedInfo == 1){
-<!-- RULETA-->
 
-<div class="bg-gray-100">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl py-3 sm:py-6 lg:max-w-none lg:py-12">
-      <h2 class="text-2xl font-bold text-gray-900">
-        Because you like {{ artists[RANDOM_NUMBER].name }}
-      </h2>
+  @if (errorPopUp == 1){
+  <div
+    class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Hey!</span> Use a valid artist url.
+  </div>
+  } @if (errorPopUp == 3){
+  <div
+    class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Hey!</span> Use a valid playlist url.
+  </div>
+  }}@if (retrievedInfo == 1){
+  <!-- RULETA-->
 
-      <div class="grid grid-cols-3 gap-4">
-        @for (item of relatedArtists; track $index) {
-        <div>
+  <div class="bg-gray-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl py-3 sm:py-6 lg:max-w-none lg:py-12">
+        <h2 class="text-2xl font-bold text-gray-900">
+          Because you like {{ artists[RANDOM_NUMBER].name }}
+        </h2>
+
+        <div class="grid grid-cols-3 gap-4">
+          @for (item of relatedArtists; track $index) {
           <div>
-            <a href="{{ relatedArtists[$index].uri }}">
-              <img
-                src="{{ relatedArtists[$index].images[0]?.url }}"
-                alt="Something failed, please try again!"
-                class="h-full w-full object-cover object-center"
-                style="width: 200px; height: 200px"
-              />
-            </a>
+            <div>
+              <a href="{{ relatedArtists[$index].uri }}">
+                <img
+                  src="{{ relatedArtists[$index].images[0]?.url }}"
+                  alt="Something failed, please try again!"
+                  class="h-full w-full object-cover object-center"
+                  style="width: 200px; height: 200px"
+                />
+              </a>
+            </div>
+            <h3 class="mt-6 text-sm text-gray-500">
+              {{ relatedArtists[$index].name }}
+            </h3>
           </div>
-          <h3 class="mt-6 text-sm text-gray-500">
-            {{ relatedArtists[$index].name }}
-          </h3>
+          }
         </div>
-        }
       </div>
- 
     </div>
   </div>
-</div>
-@if (relatedArtists.length == 0){
-<span  class="font-medium">{{ artists[RANDOM_NUMBER].name }} is too popular or has too specific genres, please try with another artist </span> 
-     
-}
-} @if (retrievedInfo == 2){
-<!-- RELATED ARTIST-->
-<div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 gap-x-4 place-content-center">
-      @if (searchedArtist!=null) {
+  @if (relatedArtists.length == 0){
+  <span class="font-medium"
+    >{{ artists[RANDOM_NUMBER].name }} is too popular or has too specific
+    genres, please try with another artist
+  </span>
+
+  } } @if (retrievedInfo == 2){
+  <!-- RELATED ARTIST-->
+  <div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 gap-x-4 place-content-center">
+        @if (searchedArtist!=null) {
         <div class="flex flex-col text-center">
           <h2 class="text-2xl font-bold text-gray-900">
-          Searched: {{ searchedArtist.name }}
-        </h2>
-        <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}" class="grid place-content-center">
-          <img
-            src="{{ searchedArtist.images[0]?.url }}"
-            alt="Something failed, please try again"
-            class="h-full w-full object-cover object-center"
-            style="width: 200px; height: 200px"
-          />
-        </a>
-      </div>
-
-      }
-      <div class="grid place-content-center text-center">
-        <h2 class="text-2xl font-bold text-gray-900">Related artist:</h2>
-
-        <div>
-          <div>
-            <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}">
-              <img
-                src="{{ relatedArtists[recomendationIndex].images[0]?.url }}" 
-                alt="Something failed, please try again"
-                class="h-full w-full object-cover object-center"
-                style="width: 200px; height: 200px"
-              />
-            </a>
-          </div>
-          <h3 class="mt-6 text-sm text-gray-500">
-            {{ relatedArtists[recomendationIndex].name }}
-          </h3>
+            Searched: {{ searchedArtist.name }}
+          </h2>
+          <a
+            href="{{ relatedArtists[recomendationIndex]?.uri || '' }}"
+            class="grid place-content-center"
+          >
+            <img
+              src="{{ searchedArtist.images[0]?.url }}"
+              alt="Something failed, please try again"
+              class="h-full w-full object-cover object-center"
+              style="width: 200px; height: 200px"
+            />
+          </a>
         </div>
-        <button
-          (click)="getNextRelated()"
-          type="button"
-          class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-          style="width: auto; height: auto; padding: 0.5rem 1rem"
-        >
-          Another one
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-} @if (retrievedInfo == 3){
-<!-- OLD PLAYLIST -->
-<div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 gap-x-4 place-content-center">
-      @if (oldPlaylistName != null) {
-      <div>
-        <h2 class="text-2xl font-bold text-gray-900">Your Playlist:</h2>
-        <a href="{{ oldPlaylistHref }}">
-          <img
-            src="{{ oldPlaylistImage }}"
-            alt="Old Playlist Image"
-            class="h-full w-full object-cover object-center"
-            style="width: 200px; height: 200px"
-          />
-        </a>
-        <h3 class="mt-6 text-sm text-gray-500">{{ oldPlaylistName }}</h3>
-      </div>
-      }
 
-      <div>
-        <h2 class="text-2xl font-bold text-gray-900">Generated Playlist:</h2>
+        }
+        <div class="grid place-content-center text-center">
+          <h2 class="text-2xl font-bold text-gray-900">Related artist:</h2>
 
-        <div>
           <div>
-            <a href="{{ newPlaylist?.external_urls?.spotify || '' }}">
-              <img
-                src="assets/soundscanner.png"
-                alt="Related Playlist Image"
-                class="h-full w-full object-cover object-center"
-                style="width: 200px; height: 200px"
-              />
-            </a>
+            <div>
+              <a href="{{ relatedArtists[recomendationIndex]?.uri || '' }}">
+                <img
+                  src="{{ relatedArtists[recomendationIndex].images[0]?.url }}"
+                  alt="Something failed, please try again"
+                  class="h-full w-full object-cover object-center"
+                  style="width: 200px; height: 200px"
+                />
+              </a>
+            </div>
+            <h3 class="mt-6 text-sm text-gray-500">
+              {{ relatedArtists[recomendationIndex].name }}
+            </h3>
           </div>
-          <h3 class="mt-6 text-sm text-gray-500">
-            {{ newPlaylist.name }}
-          </h3>
+          <button
+            (click)="getNextRelated()"
+            type="button"
+            class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+            style="width: auto; height: auto; padding: 0.5rem 1rem"
+          >
+            Another one
+          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
+  } @if (retrievedInfo == 3){
+  <!-- OLD PLAYLIST -->
+  <div class="bg-slate-200 rounded-md px-2 py-1 mt-4">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 gap-x-4 place-content-center">
+        @if (oldPlaylistName != null) {
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Your Playlist:</h2>
+          <a href="{{ oldPlaylistHref }}">
+            <img
+              src="{{ oldPlaylistImage }}"
+              alt="Old Playlist Image"
+              class="h-full w-full object-cover object-center"
+              style="width: 200px; height: 200px"
+            />
+          </a>
+          <h3 class="mt-6 text-sm text-gray-500">{{ oldPlaylistName }}</h3>
+        </div>
+        }
 
-} @if (retrievedInfo == 0){
-<!-- LOADING STATE-->
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Generated Playlist:</h2>
 
-<div role="status" class="flex justify-center items-center h-screen">
-  <svg
-    aria-hidden="true"
-    class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-    viewBox="0 0 100 101"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-      fill="currentColor"
-    />
-    <path
-      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-      fill="currentFill"
-    />
-  </svg>
-  <span class="sr-only">Loading...</span>
-</div>
+          <div>
+            <div>
+              <a href="{{ newPlaylist?.external_urls?.spotify || '' }}">
+                <img
+                  src="assets/soundscanner.png"
+                  alt="Related Playlist Image"
+                  class="h-full w-full object-cover object-center"
+                  style="width: 200px; height: 200px"
+                />
+              </a>
+            </div>
+            <h3 class="mt-6 text-sm text-gray-500">
+              {{ newPlaylist.name }}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-}
-<div class="mt-5 p-4 bg-gray-100 rounded-lg">
-  <h2 class="text-lg font-semibold">Guía de Uso</h2>
-  
-  <ul class="text-gray-700 list-disc list-inside">
-    <li><strong>Artist Bag:</strong> Lista de artistas relacionados con uno de los más escuchados de tu perfil.</li>
-    <li><strong>Related Artist:</strong> Encuentra artistas relacionados con un artista específico usando su URL de Spotify.</li>
-    <li><strong>Playlist Shuffler:</strong> Genera una playlist alternativa con artistas emergentes a partir de una URL de una playlist.</li>
-  </ul>
-</div>
-</div>
+  } @if (retrievedInfo == 0){
+  <!-- LOADING STATE-->
 
+  <div role="status" class="flex justify-center items-center h-screen">
+    <svg
+      aria-hidden="true"
+      class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+      viewBox="0 0 100 101"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor"
+      />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill"
+      />
+    </svg>
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  }
+  <div class="mt-5 p-4 rounded-lg">
+    <h2 class="text-lg font-semibold">Guía de Uso</h2>
+
+    <ul class="text-gray-700 list-disc list-inside">
+      <li>
+        <strong>Artist Bag:</strong> Lista de artistas relacionados con uno de
+        los más escuchados de tu perfil.
+      </li>
+      <li>
+        <strong>Related Artist:</strong> Encuentra artistas relacionados con un
+        artista específico usando su URL de Spotify.
+      </li>
+      <li>
+        <strong>Playlist Shuffler:</strong> Genera una playlist alternativa con
+        artistas emergentes a partir de una URL de una playlist.
+      </li>
+    </ul>
+  </div>
+  </div>
